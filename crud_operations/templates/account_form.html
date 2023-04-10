@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% include "header.html" %}
+{% block title %} Account page {% endblock %}
+{% block body %}
+{% if user.account %}
+<div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">Test</h5>
+        <p class="card-text">Exa</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+</div>
+{% else %}
+<!-- Button trigger modal -->
+<div class="card" style="margin: 50px;padding:30px;">
+    <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#createModal">
+        Add Account
+    </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form class="row g-3" method="post" action="{{url_for('create_account', id = id)}}">
+                <div class="col-12">
+                  <label for="inputAddress" class="form-label">Account number</label>
+                  <input type="number" class="form-control" id="inputAddress" placeholder="Account number.." name="account_number">
+                </div>
+                <div class="col-12">
+                  <label for="inputAddress2" class="form-label">Bank name</label>
+                  <input type="text" class="form-control" id="inputAddress2" placeholder="Bank name" name="bank_name">
+                </div>
+                <div class="col-md-6">
+                    <label for="inputEmail4" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="inputEmail4" name="location">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputPassword4" class="form-label">IFSC code</label>
+                    <input type="text" class="form-control" id="inputPassword4" name="ifsc_code">
+                  </div><br>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+              </form>
+        </div>
+      </div>
+    </div>
+  </div><br>
+  {% endif %}
+{% endblock %}
