@@ -4,13 +4,50 @@
 {% block body %}
 {% if user.account %}
 <br>
-<div class="card" style="width: 18rem;" style="margin: auto;">
-    <img src="..." class="card-img-top" alt="...">
+
+<div class="card" style="margin: 50px;padding:30px;">
     <div class="card-body">
-        <h5 class="card-title">{{user.account[0].account_number}}</h5>
-        <p class="card-text">{{user.account[0].ifsc_code}}</p>
-        <p class="card-text">{{user.account[0].location}}</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <h2 class="card-title">{{user.account[0].account_number}}</h2>
+        <p class="card-text">IFSC code - {{user.account[0].ifsc_code}}</p>
+        <p class="card-text">Address - {{user.account[0].location}}</p>
+        <a href="{{url_for('delete_account', id = user.account[0].id)}}" onclick="return confirm('Are you sure ?')" class="btn btn-danger">Delete </a> | 
+        <a href="/Account/{{user.account[0].id}}" class="btn btn-warning" data-toggle="modal" data-target="#updateModal"> Edit</a><br><br>
+        <a href="{{url_for('index')}}" class="btn btn-primary">Go to main page</a>
+        <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <form class="row g-3" method="post" action="{{url_for('update_account', id = user.account[0].id)}}">
+                      <div class="col-12">
+                        <label for="inputAddress" class="form-label">Account number</label>
+                        <input type="number" class="form-control" id="inputAddress" placeholder="Account number.." name="account_number" value="{{user.account[0].account_number}}">
+                      </div>
+                      <div class="col-12">
+                        <label for="inputAddress2" class="form-label">Bank name</label>
+                        <input type="text" class="form-control" id="inputAddress2" placeholder="Bank name" name="bank_name" value="{{user.account[0].bank_name}}">
+                      </div>
+                      <div class="col-md-6">
+                          <label for="inputEmail4" class="form-label">Location</label>
+                          <input type="text" class="form-control" id="inputEmail4" name="location" value="{{user.account[0].location}}">
+                        </div>
+                        <div class="col-md-6">
+                          <label for="inputPassword4" class="form-label">IFSC code</label>
+                          <input type="text" class="form-control" id="inputPassword4" name="ifsc_code" value="{{user.account[0].ifsc_code}}">
+                        </div><br>
+                      <div class="modal-footer">
+                          <button type="submit" class="btn btn-primary">Update</button>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+              </div>
+            </div>
+          </div>
     </div>
 </div>
 {% else %}
@@ -31,7 +68,7 @@
           </button>
         </div>
         <div class="modal-body">
-            <form class="row g-3" method="post" action="{{url_for('create_account', id = id)}}">
+            <form class="row g-3" method="post" action="{{url_for('create_account', id = user.id)}}">
                 <div class="col-12">
                   <label for="inputAddress" class="form-label">Account number</label>
                   <input type="number" class="form-control" id="inputAddress" placeholder="Account number.." name="account_number">

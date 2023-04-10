@@ -1,12 +1,11 @@
 {% extends "layout.html" %}
 {% include "header.html" %}
-{% block title %} Index page {% endblock %}
-
+{% block title %} User tasks page {% endblock %}
 {% block body %}
-<!-- Button trigger modal -->
+    
 <div class="card" style="margin: 50px;padding:30px;">
     <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#createModal">
-        Add user
+        Add Task
     </button>
   
   <!-- Modal -->
@@ -20,19 +19,25 @@
           </button>
         </div>
         <div class="modal-body">
-            <form method="post" action="{{url_for('insert_data')}}">
+            <form method="post" action="{{url_for('task_create', id= user.id)}}">
                 <div class="form-group">
-                  <label for="inputAddress">Name</label>
+                  <label for="inputAddress">Task name</label>
                   <input type="text" name="name" class="form-control" id="inputAddress" placeholder="Enter name ...">
                 </div>
                 <div class="form-group">
-                  <label for="inputAddress2">Age</label>
-                  <input type="number" name="age" class="form-control" id="inputAddress2" placeholder="Enter age....">
+                    <label for="exampleFormControlTextarea1">Description</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description" placeholder="Enter task description.. "></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="inputAddress2">Address</label>
-                    <input type="text" name="address" class="form-control" id="inputAddress2" placeholder="Enter address....">
-                </div>
+                    <label for="exampleFormControlTextarea1">Status</label>
+                    <select class="form-control" name="status">
+                        <option selected disabled hidden>Please select status</option>
+                        <option value="Start">Start</option>
+                        <option value="Running">Running</option>
+                        <option value="Complete">Complete</option>
+                        <option value="Close">Close</option>
+                    </select>
+                </div>            
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-primary">Create</button>
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -60,27 +65,25 @@
     <thead class="table-dark text-center">
       <tr>
         <th scope="col">Id</th>
-        <th scope="col">Name</th>
-        <th scope="col">Age</th>
-        <th scope="col">Address</th>
+        <th scope="col">Task</th>
+        <th scope="col">description</th>
+        <th scope="col">status</th>
         <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
-        {% for user in users %}
+        {% for task in tasks %}
         <tr>
-            <th scope="row">{{user.id}}</th>
-            <td>{{user.name}}</td>
-            <td>{{user.age}}</td>
-            <td>{{user.address}}</td>
+            <th scope="row">{{task.id}}</th>
+            <td>{{task.name}}</td>
+            <td>{{task.description}}</td>
+            <td>{{task.status}}</td>
             <td>
-              <a href="/delete/{{user.id}}" onclick="return confirm('Are you sure ?')" class="btn btn-danger">Delete</a>
-              <a href="/update/{{user.id}}" class="btn btn-warning" data-toggle="modal" data-target="#updateModal-{{user.id}}">Edit</a>
-              <a href="/users/{{user.id}}/account" id="account-btn" class="btn btn-primary">Account</a>
-              <a href="/users/{{user.id}}/tasks" id="account-btn" class="btn btn-secondary">Tasks</a>
+              <a href="/task/{{task.id}}/delete" onclick="return confirm('Are you sure ?')" class="btn btn-danger">Delete</a>
+              <a href="/update/{{task.id}}" class="btn btn-warning" data-toggle="modal" data-target="#updateModal-{{task.id}}">Edit</a>
             </td>
         </tr>
-        <div class="modal fade" id="updateModal-{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="updateModal-{{task.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -90,19 +93,25 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{{url_for('update', id = user.id)}}">
+                    <form method="post" action="{{url_for('task_update', id= task.id)}}">
                         <div class="form-group">
-                          <label for="inputAddress">Name</label>
-                          <input type="text" name="name" class="form-control" id="inputAddress" value="{{user.name}}" placeholder="Enter name ...">
+                          <label for="inputAddress">Task name</label>
+                          <input type="text" name="name" class="form-control" id="inputAddress" placeholder="Enter name ..." value="{{task.name}}">
                         </div>
                         <div class="form-group">
-                          <label for="inputAddress2">Age</label>
-                          <input type="number" name="age" class="form-control" id="inputAddress2" value="{{user.age}}" placeholder="Enter age....">
+                            <label for="exampleFormControlTextarea1">Description</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description" placeholder="Enter task description.. ">{{task.description}}</textarea>
                         </div>
                         <div class="form-group">
-                            <label for="inputAddress2">Address</label>
-                            <input type="text" name="address" class="form-control" id="inputAddress2" value="{{user.address}}" placeholder="Enter address....">
-                        </div>
+                            <label for="exampleFormControlTextarea1">Status</label>
+                            <select class="form-control" name="status">
+                                <option selected disabled hidden>Please select status</option>
+                                <option value="Start">Start</option>
+                                <option value="Running">Running</option>
+                                <option value="Complete">Complete</option>
+                                <option value="Close">Close</option>
+                            </select>
+                        </div>            
                         <div class="modal-footer">
                           <button type="submit" class="btn btn-primary">Update</button>
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
